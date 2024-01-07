@@ -1,4 +1,5 @@
-import { dataInput, newAppointment } from "./functions.js";
+import { createDB } from "./db.js";
+import { dataInput, loadAppointments, newAppointment } from "./functions.js";
 import {
   $petInput,
   $ownerInput,
@@ -9,8 +10,11 @@ import {
   $timeInput,
 } from "./selectors.js";
 
-// Event Listeners
-eventListeners();
+window.onload = () => {
+  eventListeners();
+  createDB();
+};
+
 function eventListeners() {
   $petInput.addEventListener("input", dataInput);
   $ownerInput.addEventListener("input", dataInput);

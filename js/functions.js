@@ -11,6 +11,8 @@ import {
   $timeInput,
 } from "./selectors.js";
 
+import { addToDB, deleteFromDB, editFromDB } from "./db.js";
+
 const petData = {
   mascota: "",
   propietario: "",
@@ -52,19 +54,26 @@ export function newAppointment(e) {
     // Edit object
     appointment.editAppointment({ ...petData });
 
-    // Show success message
-    ui.showAlertMessage("Cita actualizada correctamente", "success");
+    // Edit in DB
+    if (editFromDB({ ...petData })) {
+      ui.showAlertMessage("Cita actualizada correctamente", "success");
 
-    // Change text button back
-    $form.querySelector("button[type='submit']").textContent = "Crear Cita";
+      // Change text button back
+      $form.querySelector("button[type='submit']").textContent = "Crear Cita";
 
-    // Reset editing
-    editing = false;
+      // Reset editing
+      editing = false;
+    } else {
+      ui.showAlertMessage("Error al actualizar la base de datos", "error");
+    }
   } else {
     petData.id = Date.now();
 
     // Create a new appointment
     appointment.addAppointment({ ...petData }); // Spread operator
+
+    // Add to DB
+    addToDB({ ...petData });
 
     // Show success message
     ui.showAlertMessage("Cita agendada correctamente", "success");
@@ -90,6 +99,9 @@ function resetObjectData() {
 export function deleteAppointment(id) {
   // Delete appointment in object
   appointment.removeAppointment(id);
+
+  // Delete appointment in DB
+  deleteFromDB(id);
 
   // Delete appointment in the UI
   ui.showAppointments(appointment);
@@ -123,4 +135,20 @@ export function editAppointment(appointment) {
 
   // Change the text of the button
   $form.querySelector("button[type='submit']").textContent = "Guardar Cambios";
+}
+
+export function loadAppointments(appointmentsDB) {
+  if (appointmentsDB.length > 0) {
+    appointmentsDB.forEach((item) => {
+      appointment.addAppointment(item);
+      console.log(item);
+    });
+
+    ui.showAppointments(appointment);
+  } else {
+    console.log("No hay datos");
+    return;
+  }
+
+  console.log(appointment);
 }
