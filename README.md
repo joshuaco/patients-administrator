@@ -16,4 +16,4 @@ In this project you can manage the appointments of your pets.
 
 - None 😛 this project was made with HTML, CSS (bootstrap) and JavaScript.
 
-Later more updates will be added (ES6 exports, indexedDB ✅ and so on).
+Later more updates will be added (ES6 exports ✅, indexedDB ✅ and so on).
