@@ -1,5 +1,5 @@
 import { createDB } from "./db.js";
-import { dataInput, loadAppointments, newAppointment } from "./functions.js";
+import { dataInput, newAppointment } from "./functions.js";
 import {
   $petInput,
   $ownerInput,
